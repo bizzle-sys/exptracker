@@ -1,0 +1,58 @@
+import React, { useEffect, useState } from "react";
+import { Button, Form } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import { CustomInput } from "../../components/custom-input/CustomInput";
+
+const Login = () => {
+  const [formDt, setFormDt] = useState({});
+
+  const handleOnChange = (e) => {
+    const { name, value } = e.target;
+
+    setFormDt({
+      ...formDt,
+      [name]: value,
+    });
+  };
+
+  const handleOnSubmit = async (e) => {
+    e.preventDefault();
+  };
+
+  const inputFields = [
+    {
+      label: "Email",
+      type: "email",
+      name: "email",
+      placeholder: "Smith@emial.com",
+      required: true,
+    },
+    {
+      label: "Password",
+      type: "password",
+      name: "password",
+      placeholder: "*****",
+      required: true,
+    },
+  ];
+
+  return (
+    <div className="mt-5">
+      <Form onSubmit={handleOnSubmit} className="border p-5 rounded shadow-lg">
+        <h3>Welcome back!</h3>
+        <hr />
+
+        {inputFields.map((item, i) => (
+          <CustomInput key={i} {...item} onChange={handleOnChange} />
+        ))}
+
+        <div className="d-grid">
+          <Button variant="primary" type="submit">
+            Login
+          </Button>
+        </div>
+      </Form>
+    </div>
+  );
+};
+export default Login;
