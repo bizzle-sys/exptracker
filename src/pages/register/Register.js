@@ -5,6 +5,8 @@ import Form from "react-bootstrap/Form";
 import { Link, useNavigate } from "react-router-dom";
 import { CustomInput } from "../../components/custom-input/CustomInput";
 import { toast } from "react-toastify";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../firebase/firebase-config";
 
 const initialState = {
   password: "Aa12345",
@@ -37,10 +39,26 @@ const Register = () => {
   const handleOnSubmit = async (e) => {
     e.preventDefault();
 
-    const { confirmPassword, password } = frmDt;
+    const { confirmPassword, password, email } = frmDt;
 
     if (confirmPassword !== password) {
       return toast.error("Password do not match!");
+    }
+    console.log(frmDt);
+    // use firebase auth service to auth or create user auth account
+    const pendingState = createUserWithEmailAndPassword(auth, email, password);
+    toast.promise(pendingState, {
+      pending: "Please wait...",
+    });
+
+    const { user } = await pendingState;
+    console.log(user);
+    if (user?.uid) {
+      toast.success("user has been registered");
+
+      // user is registered=> add them to database
+
+      // redirect user to dashboard
     }
   };
 
