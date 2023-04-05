@@ -2,9 +2,18 @@ import React, { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { CustomInput } from "../../components/custom-input/CustomInput";
+import { loginUser } from "../user/userAction";
+import { useDispatch, useSelector } from "react-redux";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch;
+
   const [formDt, setFormDt] = useState({});
+  const { user } = useSelector((state) => state.user);
+  useEffect(() => {
+    user?.uid && navigate("/dashboard");
+  }, [user?.uid, navigate]);
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -17,6 +26,7 @@ const Login = () => {
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
+    dispatch(loginUser(formDt));
   };
 
   const inputFields = [
