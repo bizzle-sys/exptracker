@@ -4,8 +4,21 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { Link } from "react-router-dom";
+import { auth } from "../../firebase/firebase-config";
+import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { setUser } from "../../pages/user/userSlice";
 
-export const Header = ({ user }) => {
+export const Header = () => {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+
+  const handleOnLogOut = () => {
+    signOut(auth).then(() => {
+      dispatch(setUser({}));
+      toast.success("user logged out");
+    });
+  };
   return (
     <Navbar bg="dark" variant="dark" expand="md">
       <Container>
@@ -16,12 +29,19 @@ export const Header = ({ user }) => {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto fs-4">
             {user?.uid ? (
-              <Link to="/" className="nav-link">
-                <i
-                  className="fa-solid fa-right-from-bracket"
-                  title="Log Out"
-                ></i>
-              </Link>
+              <>
+                <Link to="/dashboard">
+                  <i
+                    className="fa-solid fa-right-from-bracket"
+                    title="dashboard"></i>
+                </Link>
+                <Link to="/" className="nav-link" onClick={handleOnLogOut}>
+                  <i
+                    className="fa-solid fa-right-from-bracket"
+                    title="Log Out"></i>
+                  logout
+                </Link>
+              </>
             ) : (
               <>
                 <Link to="/" className="nav-link">

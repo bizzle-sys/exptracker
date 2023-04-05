@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 const Login = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch;
+  const dispatch = useDispatch();
 
   const [formDt, setFormDt] = useState({});
   const { user } = useSelector((state) => state.user);
